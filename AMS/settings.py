@@ -53,7 +53,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'AMS.urls'
-
+AUTH_USER_MODEL='Home.NewCustomUser'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

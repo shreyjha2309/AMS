@@ -1,7 +1,9 @@
 from django.db import models
 from . widgets import DateInput
 import datetime
+from .manager import UserManager
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import AbstractUser,PermissionsMixin
 # Create your models here.
 
 #Date Validator
@@ -17,6 +19,20 @@ def date_valid(value):
         raise ValidationError("Attendance can only be for today's date!")
     # else:
     #     print("passed")
+class NewCustomUser(AbstractUser,PermissionsMixin):
+    username= None
+    email=models.EmailField(unique=True)
+    contactno=models.CharField(max_length=20)
+    is_verified=models.BooleanField(default=False)
+    is_superuser=models.BooleanField(default=False)
+    forget_password=models.CharField(max_length=50,null=True,blank=True)
+
+    objects=UserManager()
+    USERNAME_FIELD='email'
+    REQUIRED_FIELDS=[]
+
+
+
 
 class student(models.Model):
     name=models.CharField(max_length=30)
@@ -39,7 +55,7 @@ class time(models.Model):
     time = models.CharField(max_length=64)
     def __str__(self):
         return self.time
-    
+
 
 class attendance(models.Model):
     name = models.CharField(max_length=64,blank=False)
@@ -62,7 +78,3 @@ class attendanceclass(models.Model):
 
     #class Meta:
         #unique_together = ('date','status')
-
-    
-
-
